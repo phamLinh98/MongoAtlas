@@ -1,6 +1,9 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from "react";
+import { LoginUserContext } from "../../layouts/RootLayout";
+import Loading from "../Loading";
 
 const Modal = forwardRef(({ children, closeWhenClickOutside = false }, ref) => {
+  const { isLoading } = useContext(LoginUserContext);
   const handleClick = (event) => {
     if (event.target === ref.current && closeWhenClickOutside) {
       ref.current.close();
@@ -13,7 +16,10 @@ const Modal = forwardRef(({ children, closeWhenClickOutside = false }, ref) => {
       onClick={handleClick}
       className="absolute max-w-[60vw] w-[100%] max-h-[100vh] z-10 backdrop:bg-stone-900/90 p-4 rounded-md shadow-md"
     >
-      <button className="absolute top-2 right-2" onClick={() => ref.current.close()}>
+      <button
+        className="absolute top-2 right-2"
+        onClick={() => ref.current.close()}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6 text-gray-500 hover:text-red-500 transition duration-300 ease-in-out
@@ -30,6 +36,7 @@ const Modal = forwardRef(({ children, closeWhenClickOutside = false }, ref) => {
           />
         </svg>
       </button>
+      {isLoading && <Loading />}
       {children}
     </dialog>
   );
